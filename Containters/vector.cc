@@ -17,9 +17,17 @@ public:
     } 
 
     Vector(const Vector<T> & v) : my_size(v.my_size), my_capacity(v.my_capacity), buffer(new T[v.my_size]) {
-        for(auto i = 0; i < size; i++) 
+        for(auto i = 0; i < my_size; i++) 
             buffer[i] = v.buffer[i];
     }
+
+    Vector(Vector<T>&& v) {
+        my_size = v.my_size;
+        my_capacity = v.my_capacity;
+        buffer = v.buffer;
+        v.buffer = nullptr;
+    }
+
     ~Vector() {
         delete[] buffer;
     }
@@ -49,14 +57,33 @@ public:
     }
 
     void push_back(const T& value) {
+        if(my_size >= my_capacity) 
+            reserve(my_capacity * 2);
+        buffer[my_size++] = value;
+    }
 
+    T& operator[](unsigned int index) {
+        return buffer[index];
     }
     
-    void pop_back();
-    void reserve(unsigned int capacity);
-    void resize (unsigned int size);
+    void pop_back() {
+        my_size--;
+    }
+    void reserve(unsigned int capacity) {
+        if(buffer == 0) {
+            my_capacity = 0;
+            my_size = 0;
+        }
+        T* newBuffer = new T[capacity];
+        unsigned int sz = capacity < my_size ? capacity : my_size;
 
-    T& operator[](unsigned int index);
+        for(auto i = 0; i < sz; i++) 
+            newBuffer[i] = buffer[i];
+        my_capacity = capacity;
+        delete[] buffer;
+        buffer = newBuffer;
+    }
+    void resize (unsigned int size);
     Vector<T> & operator=(const Vector<T>& vec);
     void clear();
 };
