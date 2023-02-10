@@ -28,6 +28,18 @@ public:
         v.buffer = nullptr;
     }
 
+    Vector<T> & operator=(const Vector<T>& vec) {
+        delete[] buffer;
+        my_size = vec.my_size;
+        my_capacity = vec.my_capacity;
+        buffer = new T[my_size];
+
+        for(unsigned int i = 0; i < my_size; i++) 
+            buffer[i] = vec.buffer[i];
+
+        return *this;
+    }
+
     ~Vector() {
         delete[] buffer;
     }
@@ -70,7 +82,7 @@ public:
         my_size--;
     }
     void reserve(unsigned int capacity) {
-        if(buffer == 0) {
+        if(buffer == nullptr) {
             my_capacity = 0;
             my_size = 0;
         }
@@ -83,13 +95,20 @@ public:
         delete[] buffer;
         buffer = newBuffer;
     }
-    void resize (unsigned int size);
-    Vector<T> & operator=(const Vector<T>& vec);
-    void clear();
+
+    void resize (unsigned int size) {
+        reserve(size);
+        my_size = size;
+    }
+   
+    void clear() {
+        my_capacity = 0;
+        my_size = 0;
+        buffer = nullptr;
+    }
 };
 
 int main() {
     Vector<int> vec(10,1);
-
 }
 
