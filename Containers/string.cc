@@ -22,7 +22,6 @@ public:
     String(String&& other) noexcept : s_length(0), s_data(nullptr) {
         swap(*this, other);
     }
-
     //Destructor
     ~String() {
         delete[] s_data;
@@ -34,7 +33,7 @@ public:
         swap(*this, temp);
         return *this;
     }
-    
+
     // Move Assignment
     String& operator=(String&& other) {
         swap(*this, other);
@@ -56,6 +55,11 @@ public:
         swap(a.s_data, b.s_data);
         swap(a.s_length, b.s_length);
     }
-
+    // again has access to private members of the class
     friend std::ostream& operator<<(std::ostream& os, const String& str);
 };
+
+std::ostream& operator<<(std::ostream& os, const String& str) {
+    os << str.s_data;
+    return os;
+}
