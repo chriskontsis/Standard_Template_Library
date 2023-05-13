@@ -34,6 +34,7 @@ public:
         swap(*this, temp);
         return *this;
     }
+    
     // Move Assignment
     String& operator=(String&& other) {
         swap(*this, other);
