@@ -11,7 +11,6 @@ public:
     // sets _ptr to that new object
     UniquePtr(UniquePtr&& other) : _ptr(other.release()) {}
     
-
     // Case Where you have a Base class pointer pointing to a derived class. 
     template<class U>
     UniquePtr(UniquePtr<U>&& other) : _ptr(other.release()) {}
@@ -34,6 +33,7 @@ public:
         reset(other.release());
         return *this;
     }
+    
     template<class U>
     UniquePtr& operator=(UniquePtr<U>&& other) {
         reset(other.release());
