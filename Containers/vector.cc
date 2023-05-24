@@ -8,7 +8,7 @@ private:
     unsigned int my_capacity;
     T* buffer;
 public:
-    Vector() : my_size(0), my_capacity(0), buffer(0) {};
+    Vector() : my_size(0), my_capacity(0), buffer(nullptr) {};
     Vector(unsigned int size): my_size(size), my_capacity(size), buffer(new T[size]) {};
 
     Vector(unsigned int size, const T& initial) : my_size(size), my_capacity(size), buffer(new T[size]) {
