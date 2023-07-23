@@ -54,7 +54,7 @@ public:
         moving.refcount = nullptr;
         moving.ptr = nullptr;
     }
-    SP& operator=(SP&& moving) {
+    SP& operator=(SP&& moving) noexcept {
         if(this != &moving) {
             reset();
             ptr = moving.ptr;
@@ -73,7 +73,7 @@ public:
     unsigned int& use_count() const noexcept {return *refcount;}
 
     void reset() {
-        if(*refcount) {
+        if(refcount) {
             if(--(*refcount) == 0) {
                 delete ptr;
                 delete refcount;
