@@ -6,25 +6,32 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+#include <format>
 
+
+class DataManager
+{
+
+};
 class Data 
 {
 public:
-    const inline bool isValid() 
+    const inline bool isNotValid() 
     {
-        return x > 0 && y > 0 && z > 0;
+        return x < 0 || y < 0 || z < 0;
     }
     friend std::istream& operator>>(std::istream& is, Data& data) 
     {
-        char commas;
+        char comma1, comma2;
         is >> data.x
-           >> commas
+           >> comma1
            >> data.y
-           >> commas
+           >> comma2
            >> data.z;
 
-        if(!data.isValid())
+        if(data.isNotValid()) 
             is.setstate(std::ios::failbit);
+
         return is;
     }
 
@@ -60,20 +67,30 @@ int main()
         std::back_inserter(data)
     );
 
-    if(std::cin.fail()) 
+    // data was formatted incorrectly 
+    if(std::cin.fail() && !std::cin.eof()) 
     {
-        std::cout << "Input incorrect >> [x,y,z] all need to be > 0 \n";
-        return 0;
+        std::cout << "Invalid input format >> [x,y,z]\n";
+        return -1;
     }
 
+    // add all unused data to set, make sure that no two job ids are the same using a flag
     std::unordered_set<int> unusedData;
-    std::unordered_map<int, Data> parentData;
-    std::for_each(cbegin(data), cend(data), [&unusedData, &parentData](const Data& data) 
+    int duplicateJobId {0};
+    std::ranges::for_each(std::as_const(data), [&unusedData, &duplicateJobId](const Data& data) 
     {
-        if(data.x != 0)
-            parentData[data.x] = data;
+        if(unusedData.contains(data.x)) 
+        {
+            std::cout << std::format("Job with id {} has appeared more than once\n", data.x);
+            duplicateJobId = 1;
+            return;
+        }
         unusedData.insert(data.x);
     });
+
+    if(duplicateJobId) 
+        return -1;
+    //collect all of tha parents for each job
 
     
     std::vector<Data> output;
