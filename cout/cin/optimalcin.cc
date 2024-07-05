@@ -23,15 +23,13 @@ public:
     friend std::istream& operator>>(std::istream& is, Data& data) 
     {
         char comma1, comma2;
-        is >> data.x
-           >> comma1
-           >> data.y
-           >> comma2
+        is >> data.x >> comma1
+           >> data.y >> comma2
            >> data.z;
 
         if(data.isNotValid()) 
             is.setstate(std::ios::failbit);
-
+            
         return is;
     }
 
@@ -45,6 +43,10 @@ public:
     int x;
     int y;
     int z;
+};
+
+class JobChain {
+
 };
 
 void readHeader(std::istream& is) 
@@ -90,10 +92,20 @@ int main()
 
     if(duplicateJobId) 
         return -1;
+
     //collect all of tha parents for each job
+    std::unordered_map<int, Data> previousData;
+    std::ranges::for_each(std::as_const(data), [&previousData](const Data& data)
+    {
+        if(data.x != 0)
+            previousData[data.x] = data;
+    });
+
+
+    std::vector<JobChain> jobChains;
+
 
     
-    std::vector<Data> output;
     std::copy
     (
         begin(data),
