@@ -75,6 +75,7 @@
         "utility": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "__verbose_abort": "cpp"
+        "__verbose_abort": "cpp",
+        "execution": "cpp"
     }
 }

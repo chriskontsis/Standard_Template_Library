@@ -56,7 +56,7 @@ class Vector {
         void push_back(int val) {
             if(size >= capacity) 
                 reserve(capacity * 2);
-            buffer[size++] = value;
+            buffer[size++] = val;
         }
 
         void reserve(int new_capacity) {
@@ -68,7 +68,7 @@ class Vector {
             int new_size = new_capacity < size ? new_capacity : size;
             for(int i = 0; i < new_size; i++) 
                 newBuffer[i] = buffer[i];
-            my_capacity = new_capacity;
+            capacity = new_capacity;
             delete[] buffer;
             buffer=newBuffer;
         }
@@ -81,6 +81,11 @@ int main() {
     Vector<int> b(2,10);
 
     a = b;
+
+    a.push_back(3);
+    a.push_back(4);
     for(int i = 0; i < a.getSize(); i++)
         std::cout << a[i] << ' ';
+    
+
 }

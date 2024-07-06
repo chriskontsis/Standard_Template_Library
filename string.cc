@@ -25,7 +25,7 @@ class String {
         }
 
         String& operator=(const String& other) {
-            String temp(other.data);
+            String temp(other);
             swap(*this, temp);
             return *this;
         }
@@ -54,7 +54,7 @@ class String {
         }
 
         friend std::istream& operator>>(std::istream& is, String& s) {
-            is >> s.data;
+
             return is;
         }
 };
