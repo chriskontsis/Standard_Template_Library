@@ -45,10 +45,23 @@ class String {
         String& operator=(String other) 
         {
             std::cout << "String operator=()\n";
-            swap(*this, other);
+            if(this != &other)
+                swap(*this, other);
             return *this;
         }
 
+        bool operator==(const String& rhs) const
+        {
+            if(this == &rhs) return true;
+            if(length != rhs.length) return false;
+            return std::strcmp(data, rhs.data) == 0;
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, String& str)
+        {
+            os << str.data;
+            return os;
+        }
 
         friend void swap(String& lhs, String& rhs)
         {   
@@ -56,7 +69,7 @@ class String {
             swap(lhs.length, rhs.length);
             swap(lhs.data, rhs.data);
         }
-        
+
     private:
         char* data;
         std::size_t length;
@@ -85,8 +98,16 @@ int main() {
     s6 = std::move(s4);
 
     // equality check operator==
+    std::cout << "Operator==\n";
+    String s7 = s6;
+    std::cout << std::boolalpha;
+    std::cout << (s7 == s6) << '\n';
+    String s8 = "World";
+    std::cout << (s7 == s8) << '\n';
     
     // operator+
 
     // operator+=
+
+    std::cout << '\n';
 }
