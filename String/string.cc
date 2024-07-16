@@ -65,14 +65,12 @@ class String {
             std::cout << "String operator+(const String& rhs)\n";
             size_t newLen = length + rhs.length + 1;
             char *newdata = new char[newLen];
-            strcpy(newdata, data);
-            strcat(newdata, rhs.data);
+            std::strcpy(newdata, data);
+            std::strcat(newdata, rhs.data);
             String result(newdata);
             delete[] newdata;
             return result;
         }
-
-
 
         const char& operator[](std::size_t idx) const
         {
@@ -97,6 +95,7 @@ class String {
     private:
         char* data;
         std::size_t length;
+        
     public:
         static int cnt;
 };
