@@ -1,6 +1,7 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
+#include <string>
 class String {
     public:
         String() 
@@ -33,12 +34,36 @@ class String {
             other.length = 0;
         }
 
+        ~String() {
+            std::cout << "~String()\n";
+            delete[] data;
+        }
+
         String& operator=(String other) 
         {
             std::cout << "operator=(String other)\n";
             if(this != &other)
                 swap(*this, other);
             return *this;
+        }
+
+        String operator+(String& other)
+        {
+            std::size_t newLen = other.length + length;
+            char* newData = new char[newLen+1];
+            strcpy(newData, data);
+            strcat(newData, other.data);
+            String result(newData);
+            delete[] newData;
+            return result;
+        }
+
+        bool operator==(const String& other) const
+        {
+            std::cout << "operator==\n";
+            if(this == &other) return true;
+            if(other.length != length) return false;
+            return strcmp(data, other.data) == 0;
         }
 
 
@@ -54,6 +79,7 @@ class String {
         char* data;
         std::size_t length;
 };
+
 
 int main() {
     // String()
@@ -76,10 +102,22 @@ int main() {
     // String() then const String& other then operator=(String other)
     String s5;
     s5 = s4;
-
     std::cout << "----\n";
+
     // move assignment
     String s6;
     s6 = std::move(s4);
+    std::cout << "----\n";
+
+    //operator==
+    std::cout << std::boolalpha;
+    std::cout << (s6 == s2) << '\n';
+    std::cout << (s1 == s6) << '\n';
+    std::cout << "----\n";
+
+    //operator+
+    // String(), const String&, operator=, const char *, ~String()
+    String s7;
+    s7 = s6 + s6;
     std::cout << "----\n";
 }
